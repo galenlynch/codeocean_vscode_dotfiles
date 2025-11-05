@@ -1,4 +1,5 @@
 {
     "workbench.colorTheme": "Default Dark+",
-    "workbench.startupEditor": "none"
+    "workbench.startupEditor": "none",
+    "explorer.confirmDragAndDrop": false
 }
