@@ -1,5 +1,7 @@
 {
     "workbench.colorTheme": "Default Dark+",
     "workbench.startupEditor": "none",
-    "explorer.confirmDragAndDrop": false
+    "explorer.confirmDragAndDrop": false,
+    "vim.useSystemClipboard": true,
+    "terminal.integrated.allowChords": false
 }
