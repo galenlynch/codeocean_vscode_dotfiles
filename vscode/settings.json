@@ -20,5 +20,7 @@
     "basedpyright.analysis.typeCheckingMode": "standard",
     "jupyter.askForKernelRestart": false,
     "interactiveWindow.executeWithShiftEnter": true,
-    "jupyter.interactiveWindow.textEditor.executeSelection": true
+    "jupyter.interactiveWindow.textEditor.executeSelection": true,
+    "editor.hover.delay": 800,
+    "jupyter.interactiveWindow.creationMode": "perFile"
 }
