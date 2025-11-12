@@ -17,5 +17,6 @@
     "explorer.confirmDragAndDrop": false,
     "vim.useSystemClipboard": true,
     "terminal.integrated.allowChords": false,
-    "basedpyright.analysis.typeCheckingMode": "standard"
+    "basedpyright.analysis.typeCheckingMode": "standard",
+    "jupyter.askForKernelRestart": false
 }
