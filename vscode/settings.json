@@ -22,5 +22,6 @@
     "interactiveWindow.executeWithShiftEnter": true,
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "editor.hover.delay": 800,
-    "jupyter.interactiveWindow.creationMode": "perFile"
+    "jupyter.interactiveWindow.creationMode": "perFile",
+    "notebook.output.scrolling": true
 }
