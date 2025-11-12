@@ -24,5 +24,6 @@
     "editor.hover.delay": 800,
     "jupyter.interactiveWindow.creationMode": "perFile",
     "notebook.output.scrolling": true,
-    "notebook.output.textLineLimit": 10000
+    "notebook.output.textLineLimit": 10000,
+    "notebook.output.wordWrap": true
 }
