@@ -23,5 +23,6 @@
     "jupyter.interactiveWindow.textEditor.executeSelection": true,
     "editor.hover.delay": 800,
     "jupyter.interactiveWindow.creationMode": "perFile",
-    "notebook.output.scrolling": true
+    "notebook.output.scrolling": true,
+    "notebook.output.textLineLimit": 10000
 }
