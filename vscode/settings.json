@@ -25,5 +25,6 @@
     "jupyter.interactiveWindow.creationMode": "perFile",
     "notebook.output.scrolling": true,
     "notebook.output.textLineLimit": 10000,
-    "notebook.output.wordWrap": true
+    "notebook.output.wordWrap": true,
+    "remote.autoForwardPortsSource": "hybrid"
 }
