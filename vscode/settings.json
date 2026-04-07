@@ -26,5 +26,6 @@
     "notebook.output.scrolling": true,
     "notebook.output.textLineLimit": 10000,
     "notebook.output.wordWrap": true,
-    "remote.autoForwardPortsSource": "hybrid"
+    "remote.autoForwardPortsSource": "hybrid",
+    "task.allowAutomaticTasks": "on"
 }
