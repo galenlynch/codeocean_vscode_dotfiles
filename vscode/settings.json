@@ -27,5 +27,6 @@
     "notebook.output.textLineLimit": 10000,
     "notebook.output.wordWrap": true,
     "remote.autoForwardPortsSource": "hybrid",
-    "task.allowAutomaticTasks": "on"
+    "task.allowAutomaticTasks": "on",
+    "claudeCode.preferredLocation": "panel"
 }
