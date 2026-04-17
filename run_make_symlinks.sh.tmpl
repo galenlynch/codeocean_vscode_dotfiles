@@ -1,13 +1,8 @@
 #!/bin/sh
 
 # note: this is set to run every time, since symlinks seem to disappear on CO restart
-{{if env "CO_COMPUTATION_ID"}}
+{{ if not (env "CO_COMPUTATION_ID") }} exit 0 {{ end }}
 CODE_DIR="{{.chezmoi.homeDir}}/capsule/code/.vscode/User/"
-{{else if eq .chezmoi.os "darwin"}}
-CODE_DIR="{{.chezmoi.homeDir}}/Library/Application Support/Code/User/"
-{{else if eq .chezmoi.os "linux"}}
-CODE_DIR="{{.chezmoi.homeDir}}/.config/Code/User/"
-{{end}}
 
 # rename files first if they exist
 if [ -e $CODE_DIR/keybindings.json ]; then
