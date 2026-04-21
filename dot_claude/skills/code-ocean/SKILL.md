@@ -11,7 +11,7 @@ Each capsule is a git repo, managed internally by Code Ocean or linked to GitHub
 
 ## Detecting a Capsule
 
-A repo is a Code Ocean capsule if it has a `.codeocean/` directory. Secondary signals: `environment/Dockerfile`, `code/run.sh`, `metadata/metadata.yml`, `.gitignore` entries for `/data/`, `/results/`, `/scratch/`.
+A repo is a Code Ocean capsule if it has a `.codeocean/` directory. Secondary signals: `environment/Dockerfile`, `code/run` (or `code/run.sh`), `metadata/metadata.yml`, `.gitignore` entries for `/data/`, `/results/`, `/scratch/`.
 
 ## Runtime Filesystem
 
@@ -27,7 +27,7 @@ A repo is a Code Ocean capsule if it has a `.codeocean/` directory. Secondary si
 
 - **Capsules are NOT packages** - `pyproject.toml` has no `[build-system]`, only tooling config
 - **uv for dependency management** - `uv sync` locally, `uv pip install` in postInstall
-- **Entry point**: `code/run.sh` (bash) → `code/run_capsule.py` (Python `run()` function)
+- **Entry point**: `code/run` (bash, executable, no extension) → `code/run_capsule.py` (Python `run()` function). **Pipelines require the exact filename `run` — `run.sh` breaks pipelines.** Standalone Reproducible Runs accept either, but use `run` uniformly so the same capsule works in both contexts.
 - **Strict linting**: ruff (line length 88, extended rules), NumPy docstring convention
 - **GitHub-first**: repos live on GitHub, linked to Code Ocean
 
