@@ -20,7 +20,7 @@ A repo is a Code Ocean capsule if it has a `.codeocean/` directory. Secondary si
 | `/code` | Read-write | Source code |
 | `/data` | **Read-only** | Mounted data assets (one subdirectory per asset) |
 | `/results` | Read-write | **Only persistent output** - everything else is lost after a run |
-| `/scratch` | Read-write (EFS) | Persistent scratch space across runs |
+| `/scratch` | Read-write (EFS) | Persistent scratch space across runs — **Reproducible Runs / Cloud Workstations only; NOT mounted in pipelines** |
 | `/root` (incl. `/tmp`) | Read-write | **~5 GB limit** - use `/scratch` for large temp files |
 
 ## Capsule Conventions

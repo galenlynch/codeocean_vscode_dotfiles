@@ -5,6 +5,7 @@ Pipelines connect multiple capsules into multi-step workflows (Nextflow-based, r
 ## Key Compatibility Differences
 
 - `/root` does **not** exist in pipelines - use `/data` or `../data`, never `/root/capsule/data`
+- **`/scratch` does not exist in pipelines either.** The EFS scratch volume is mounted for Reproducible Runs and Cloud Workstations, not for Nextflow process containers. Any code that writes to `cfg.scratch_dir` expecting persistence across runs (e.g. model caches like `/scratch/ae_<probe>.pt`) is a no-op in pipeline mode — the file is written and discarded with the runner. When an aggregator / Collect step fails and forces a pipeline rerun, assume the full per-probe compute cost, not a cached-intermediate shortcut. For genuine cross-run caching in a pipeline, use a captured Data Asset or round-trip intermediates through `/results` as a downstream input.
 - Pipeline data may be symlinked from `/tmp` - use `find -L` (follow symlinks) when traversing
 - Pipeline capsules ignore capsule-level secrets - a single IAM role is set in Pipeline Settings
 - External Data Assets must be copied (no s3fs in Nextflow) - prefer Internal Data Assets for performance
@@ -69,13 +70,17 @@ No capsule code changes are needed to enable fan-out — write structured output
 
 - **Order is not guaranteed.** "Items may be passed in a different order than they appear in the Data Asset" for both Default and Flatten. Don't encode positional assumptions into item names.
 - **Unequal fan-out with Default discards extras.** If two Default-connected inputs to a capsule have different item counts, the smaller count wins — "extra items being left out of the computation." If you need full coverage, use Collect for the smaller input.
-- **Duplicate filenames across parallel instances → the Collect process never runs.** Any time a fan-out stage feeds a Collect connection, every file or folder an upstream instance writes to `/results` must be namespaced per instance. If N workers each write `/results/<name>` for the same `<name>`, Nextflow aborts the downstream process at staging time with:
+- **Duplicate filenames across parallel instances → the Collect process never runs. This is the single most expensive failure mode to hit.** Any time a fan-out stage feeds a Collect connection, every file or folder an upstream instance writes to `/results` must be namespaced per instance. If N workers each write `/results/<name>` for the same `<name>`, Nextflow aborts the downstream process at staging time with:
 
   ```
   input file name collision -- There are multiple input files for each of the following file names: capsule/data/<name>
   ```
 
-  The downstream capsule (aggregator) never starts — the pipeline fails before it runs. Collect does not merge, rename, or pick-last; it refuses to stage colliding inputs. Mitigations:
+  **Why this is so costly:** all N fan-out workers still complete successfully — often multiple hours each — before the aggregator's staging step discovers the collision and aborts. No cross-run caching exists (`/scratch` is not mounted in pipelines), so a rerun pays the full per-worker cost again. One missed namespacing on a harmless-looking new output directory can mean rebuilding images and burning another ~N × worker-runtime hours before the pipeline even attempts the aggregator. In `pl-oversplitting-analysis` this has bitten the pipeline three separate times (once each for `run.log`, `pair_figures/`, `exclusion_figures/`); each cost hours of GPU-worker time before surfacing.
+
+  **Treat every new worker output path as an audit point before merging.** Reviewing a diff that adds a new `cfg.results_dir / "something"` in a worker codepath? Check it's under `probe_<device>/` or equivalent fan-out key. Collect does not merge, rename, or pick-last; it refuses to stage colliding inputs.
+
+  Mitigations:
   - Namespace every output by the fan-out unit (e.g. `/results/probe_<name>/summary.csv`, `/results/probe_<name>/pair_figures/*.png`) — this is the pattern used in the `pl-oversplitting-analysis` worker
   - Don't `tee /results/run.log` or otherwise write a fixed top-level filename — CO captures stdout natively, and N workers writing the same log path is this exact collision
   - Enable "Generate indexed folders" on the connection as a fallback, which wraps each source instance's output in a distinct subdir

@@ -28,9 +28,9 @@ Lists attached data assets with UUIDs and short mount names. Each asset appears 
 ```
 At runtime (interactive / monolith RR): `/data/sorted/`.
 
-**Prefer short mount names** (`sorted`, `ccg`, `raw`, `nwb`) over the full AIND asset name (`ecephys_786867_2025-09-25_..._sorted_2026-01-10_10-30-10`). Makes `/data/` paths readable in logs and stable across sessions.
+**Short mount names apply to pipeline capsules only.** Pipeline capsules get their data from upstream nodes and benefit from stable short names (`sorted`, `ccg`, `raw`, `nwb`) independent of the source asset's full AIND ID. For standalone capsules — interactive / Cloud Workstation / Reproducible Run — leave the mount blank and `/data/` will use the full AIND asset name; renaming there has no upside and obscures which asset is actually attached.
 
-**Pipeline caveat**: mount names here apply to *interactive / Cloud Workstation / standalone Reproducible Run* paths. For pipeline runs the data-asset mount names come from the **pipeline's** data-asset attachments (set in the pipeline UI), not from the capsule's `datasets.json`. Rename in both places if you want matching paths.
+**Pipeline caveat**: for pipeline runs, the data-asset mount names come from the **pipeline's** data-asset attachments (set in the pipeline UI), not from the capsule's `datasets.json`. Rename in both places if you want matching paths.
 
 ## environment.json
 Defines the base Docker image, package installers, and build options. The `environment/Dockerfile` is auto-generated from this by Code Ocean's UI — **do not edit the Dockerfile manually** (CO overwrites on next save).
