@@ -12,7 +12,7 @@
         "notebook.source.fixAll": "explicit",
         "notebook.source.organizeImports": "explicit"
     },
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Dark Modern",
     "workbench.startupEditor": "none",
     "explorer.confirmDragAndDrop": false,
     "vim.useSystemClipboard": true,
